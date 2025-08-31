@@ -1,0 +1,3 @@
+/home/carlosdelfino/workspace/Guerra_Eletrônica/Doppler_Shift/build/_deps/raylib-subbuild/CMakeFiles/raylib-populate.dir
+/home/carlosdelfino/workspace/Guerra_Eletrônica/Doppler_Shift/build/_deps/raylib-subbuild/CMakeFiles/edit_cache.dir
+/home/carlosdelfino/workspace/Guerra_Eletrônica/Doppler_Shift/build/_deps/raylib-subbuild/CMakeFiles/rebuild_cache.dir
