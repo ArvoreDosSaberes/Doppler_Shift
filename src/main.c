@@ -1,3 +1,10 @@
+/**
+ * \file main.c
+ * \brief Simulador 3D do Efeito Doppler usando Raylib.
+ *
+ * Permite variar ângulo, velocidade, distância e alternar entre fonte móvel
+ * e receptor móvel. Exibe a frequência observada calculada em tempo real.
+ */
 #include "raylib.h"
 #include "raymath.h"
 #include <stdbool.h>
@@ -16,6 +23,7 @@ static const float SPEED_OF_SOUND = 343.0f; // m/s
 // Utility
 static float deg2rad(float d) { return d * (float)M_PI / 180.0f; }
 
+/** \brief Estado e parâmetros do simulador de Doppler. */
 typedef struct {
     // Parameters
     float baseFreq;     // Hz
@@ -29,10 +37,22 @@ typedef struct {
     bool showScreenshots;
 } DopplerState;
 
+/**
+ * \brief Desenha uma grade no plano XZ.
+ * \param slices Número de divisões.
+ * \param spacing Espaçamento entre linhas.
+ */
 static void DrawGridXZ(int slices, float spacing) {
     DrawGrid(slices, spacing);
 }
 
+/**
+ * \brief Desenha uma seta 3D entre dois pontos.
+ * \param start Ponto inicial.
+ * \param end Ponto final.
+ * \param thickness Espessura (para o cone da ponta).
+ * \param color Cor da seta.
+ */
 static void DrawArrow3D(Vector3 start, Vector3 end, float thickness, Color color) {
     DrawLine3D(start, end, color);
     Vector3 dir = Vector3Subtract(end, start);
@@ -45,6 +65,12 @@ static void DrawArrow3D(Vector3 start, Vector3 end, float thickness, Color color
     DrawCylinderEx(base, end, headRad*0.5f, 0.0f, 12, color);
 }
 
+/**
+ * \brief Calcula a frequência observada pelo efeito Doppler e a velocidade radial.
+ * \param st Estado do simulador com parâmetros físicos.
+ * \param fObserved Saída: frequência observada (Hz).
+ * \param radialSpeed Saída: componente radial da velocidade (m/s).
+ */
 static void ComputeDoppler(const DopplerState* st, float* fObserved, float* radialSpeed) {
     // Line-of-sight along +X from source->receiver by default
     // angleDeg is between velocity vector and LOS
@@ -73,6 +99,16 @@ static void ComputeDoppler(const DopplerState* st, float* fObserved, float* radi
     }
 }
 
+/**
+ * \brief Desenha o HUD 2D com parâmetros e resultados.
+ * \param st Estado do simulador.
+ * \param fObs Frequência observada.
+ * \param vr Velocidade radial.
+ * \param screenW Largura da tela.
+ * \param screenH Altura da tela.
+ * \param shots Texturas de screenshots (opcional).
+ * \param shotsCount Quantidade de screenshots válidas.
+ */
 static void DrawHUD2D(const DopplerState* st, float fObs, float vr, int screenW, int screenH, Texture2D* shots, int shotsCount) {
     const int pad = 12;
     const int line = 22;
@@ -122,6 +158,7 @@ static void DrawHUD2D(const DopplerState* st, float fObs, float vr, int screenW,
     }
 }
 
+/** \brief Ponto de entrada. Inicializa janela, câmera e laço principal. */
 int main(void) {
     // Window and 3D camera
     const int screenWidth = 1280;

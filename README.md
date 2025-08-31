@@ -59,3 +59,25 @@ O executável será gerado em `build/doppler_shift` (ou `build/Release/doppler_s
 - Receptor móvel: `f' = f0 * (c + v_r) / c`
 
 Para uma explicação detalhada e exemplos de uso, consulte `TUTORIAL.md`.
+
+## Documentação (Doxygen)
+
+Este projeto inclui um `Doxyfile` e um alvo CMake `doc` (se o Doxygen estiver instalado ao configurar o projeto).
+
+Gerar documentação HTML:
+
+```bash
+# Reconfigure para detectar o Doxygen (se instalou depois)
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+# Gerar docs
+cmake --build build --target doc -j
+
+# Abra em:
+xdg-open docs/html/index.html  # Linux
+```
+
+O Doxygen processa:
+- `README.md` (usado como página inicial)
+- `TUTORIAL.md`
+- Arquivos-fonte em `src/`

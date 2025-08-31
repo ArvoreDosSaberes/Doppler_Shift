@@ -3,6 +3,7 @@ project(Doppler_Shift C)
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Raylib dependency via FetchContent
 include(FetchContent)
@@ -54,4 +55,19 @@ install(TARGETS doppler_shift RUNTIME DESTINATION bin)
 # Default build type
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
+endif()
+
+# --- Documentation (Doxygen) ---
+find_package(Doxygen QUIET)
+if (DOXYGEN_FOUND)
+  add_custom_target(doc
+    COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_SOURCE_DIR}/Doxyfile
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Generating API documentation with Doxygen"
+    VERBATIM)
+else()
+  message(STATUS "Doxygen not found: creating placeholder 'doc' target (install doxygen to enable)")
+  add_custom_target(doc
+    COMMAND ${CMAKE_COMMAND} -E echo "Doxygen not found. Please install doxygen and reconfigure."
+    VERBATIM)
 endif()
